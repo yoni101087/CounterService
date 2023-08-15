@@ -59,6 +59,9 @@ pipeline {
 
         
         stage('Deploy To Production') {
+            when {
+                expression { currentBuild.branchName == 'master' }
+                 }
             steps {
                 script {
                     // Run the Docker container in the production environment
