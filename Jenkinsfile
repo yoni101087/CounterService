@@ -60,7 +60,7 @@ pipeline {
         
         stage('Deploy To Production') {
             when {
-                expression { currentBuild.branchName == 'master' }
+                expression { env.BRANCH_NAME == 'master' }
                  }
             steps {
                 script {
