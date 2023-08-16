@@ -58,13 +58,43 @@ pipeline {
             }
             steps {
                 script {
+                    try {
+                        //Try to deploy new version to production
+                        sh """
+                            docker service update --image ${env.APP_NAME} ${env.APP_NAME}:${env.GIT_COMMIT_HASH}
+                        """
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
+            }
+            post {
+                failure {
                     sh """
-                        docker rm -f ${env.APP_NAME}
-                        docker run -d -p 80:80 --name ${env.APP_NAME} --restart always ${env.APP_NAME}:${env.GIT_COMMIT_HASH}
-                        docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.DOCKERHUB_USER}/${env.APP_NAME}:stable
+                    echo "Deployment to production failed!"
+                    docker service update --rollback ${env.APP_NAME}
                     """
+
                 }
             }
         }
+        stage('Tag as stable') {
+            steps {
+                script {
+
+                        sh """
+                            docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.APP_NAME}:stable
+                            docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.DOCKERHUB_USER}/${env.APP_NAME}:${env.GIT_COMMIT_HASH}
+                            docker push ${env.DOCKERHUB_USER}/${env.APP_NAME}:${env.GIT_COMMIT_HASH}-stable
+                        """
+                    }
+
+                }
+            }
+        }
+
+
+
     }
 }
