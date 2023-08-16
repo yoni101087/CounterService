@@ -68,7 +68,7 @@ pipeline {
                     
                     sh """
                         docker rm -f ${env.APP_NAME}
-                        docker run -d -p 80:80 --name ${env.APP_NAME} ${env.APP_NAME}
+                        docker run -d -p 80:80 --name ${env.APP_NAME} --restart always ${env.APP_NAME}
                     """
                 }
             }
