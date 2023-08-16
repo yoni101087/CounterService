@@ -32,11 +32,13 @@ pipeline {
                 script {
                     // Get the Git commit hash
                     def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    // Set the gitCommitHash as an environment variable to make it available in other stages
+                    env.GIT_COMMIT_HASH = gitCommitHash
                     // Build the Docker image
                     sh "docker build -t ${env.APP_NAME}:${gitCommitHash} ."
-                    }
                 }
-            } //Build 
+            }
+        } // Build
         
         stage('Promote to Production') {
             steps {
