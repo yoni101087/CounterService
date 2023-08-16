@@ -88,7 +88,7 @@ pipeline {
 
                         sh """
                             docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.APP_NAME}:stable
-                            docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.DOCKERHUB_USER}/${env.APP_NAME}:${env.GIT_COMMIT_HASH}
+                            docker tag ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.DOCKERHUB_USER}/${env.APP_NAME}:${env.GIT_COMMIT_HASH}-stable
                             docker push ${env.DOCKERHUB_USER}/${env.APP_NAME}:${env.GIT_COMMIT_HASH}-stable
                         """
                     }
