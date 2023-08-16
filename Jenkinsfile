@@ -51,7 +51,7 @@ pipeline {
                         """
                     }
                     // Tag the Docker image as "stable"
-                    sh "docker tag ${env.APP_NAME}:latest ${env.DOCKERHUB_USER}/${env.APP_NAME}:${gitCommitHash}"
+                    sh "docker tag ${env.APP_NAME}:${gitCommitHash} ${env.DOCKERHUB_USER}/${env.APP_NAME}:${gitCommitHash}"
             
                     // Push the "stable" tagged image to DockerHub
                     sh "docker push ${env.DOCKERHUB_USER}/${env.APP_NAME}:${gitCommitHash}"
