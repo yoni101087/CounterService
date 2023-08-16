@@ -30,8 +30,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Get the Git commit hash
+                    def gitCommitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     // Build the Docker image
-                    sh "docker build -t ${env.APP_NAME} ."
+                    sh "docker build -t ${env.APP_NAME}:${gitCommitHash} ."
                     }
                 }
             } //Build 
@@ -49,13 +51,13 @@ pipeline {
                         """
                     }
                     // Tag the Docker image as "stable"
-                    sh "docker tag ${env.APP_NAME}:latest ${env.DOCKERHUB_USER}/${env.APP_NAME}:stable"
+                    sh "docker tag ${env.APP_NAME}:latest ${env.DOCKERHUB_USER}/${env.APP_NAME}:${gitCommitHash}"
             
                     // Push the "stable" tagged image to DockerHub
-                    sh "docker push ${env.DOCKERHUB_USER}/${env.APP_NAME}:stable"
+                    sh "docker push ${env.DOCKERHUB_USER}/${env.APP_NAME}:${gitCommitHash}"
                 }
             }
-        } //Promote to Productio
+        } //Promote to Production
 
         
         stage('Deploy To Production') {
@@ -68,7 +70,9 @@ pipeline {
                     
                     sh """
                         docker rm -f ${env.APP_NAME}
-                        docker run -d -p 80:80 --name ${env.APP_NAME} --restart always ${env.APP_NAME}
+                        docker run -d -p 80:80 --name ${env.APP_NAME} --restart always ${env.APP_NAME}:${gitCommitHash}
+                        sh "docker tag ${env.APP_NAME}:${gitCommitHash} ${env.DOCKERHUB_USER}/${env.APP_NAME}:stable"
+                        
                     """
                 }
             }
