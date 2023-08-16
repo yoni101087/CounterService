@@ -54,7 +54,7 @@ pipeline {
 
         stage('Deploy To Production') {
             when {
-                expression { env.BRANCH_NAME == 'dev' }
+                expression { env.BRANCH_NAME == 'master' }
             }
             steps {
                 script {
@@ -81,7 +81,7 @@ pipeline {
         }
         stage('Tag as stable') {
             when {
-                expression { env.BRANCH_NAME == 'dev' }
+                expression { env.BRANCH_NAME == 'master' }
             }
             steps {
                 script {
