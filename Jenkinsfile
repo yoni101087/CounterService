@@ -61,7 +61,7 @@ pipeline {
                     try {
                         //Try to deploy new version to production
                         sh """
-                            docker service update --image ${env.APP_NAME} ${env.APP_NAME}:${env.GIT_COMMIT_HASH}
+                            docker service update --image ${env.APP_NAME}:${env.GIT_COMMIT_HASH} ${env.APP_NAME} 
                         """
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
