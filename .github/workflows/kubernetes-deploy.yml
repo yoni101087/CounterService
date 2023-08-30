@@ -51,7 +51,7 @@ jobs:
           APP_NAMESPACE: default
           IMAGE_TAG: latest  # You can set this to your desired tag
         run: |
-          argocd app create rick-and-morty-app \
+          argocd app create counterservice \
             --repo https://github.com/yoni101087/CounterService.git \
             --path $REPO_PATH \
             --dest-server https://kubernetes.default.svc \
