@@ -4,7 +4,7 @@ name: Kubernetes Deployment Workflow
 on:
   push:
     branches:
-      - argocd
+      - master
 
 jobs:
   setup-k8s-cluster:
