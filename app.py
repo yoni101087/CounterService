@@ -6,6 +6,7 @@ counter = 0
 @app.route('/', methods=['GET', 'POST'])
 def counter_service():
     global counter
+
     
     if request.method == 'POST':
         counter += 1
