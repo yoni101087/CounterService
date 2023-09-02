@@ -68,13 +68,12 @@ jobs:
             --dest-namespace default \
             --revision master  # Change this to your desired branch or revision
 
-          argocd app set counterservice \
-            --values image.tag=$IMAGE_TAG
+#          argocd app set counterservice \
+#            --values image.tag=$IMAGE_TAG
 
       - name: Trigger Synchronization
         run: |
-          whoami
-#          argocd app sync counterservice
+          argocd app sync counterservice
 
   test-app:
     needs: deploy-app
