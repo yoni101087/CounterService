@@ -17,7 +17,8 @@ spec:
                 name: {{ include "name" . }}
                 port:
                   number: 9083
-
-
-
+status:
+  loadBalancer:
+    ingress:
+      - ip: 127.0.0.1
 {{- end }}
