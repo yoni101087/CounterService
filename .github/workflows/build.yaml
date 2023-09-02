@@ -1,0 +1,74 @@
+
+name: Kubernetes Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  setup-k8s-cluster:
+    runs-on: self-hosted   # Specify the runner label for your self-hosted runner
+    steps:
+      - name: Set up Kubernetes cluster
+        # Add steps to set up MicroK8s or any other Kubernetes cluster on the runner
+        run: |
+          # Example: Install MicroK8s
+          sudo snap install microk8s --classic
+          sudo microk8s.start
+
+    env:
+      APPLICATION: counterservice
+      NAMESPACE: default
+
+  deploy-app:
+    needs: setup-k8s-cluster
+    runs-on: self-hosted   # Specify the runner label for your self-hosted runner
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+          
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build the Docker Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:latest .
+        
+
+      - name: Push the Docker Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:latest
+
+
+  test-app:
+    needs: deploy-app
+    runs-on: self-hosted   # Specify the runner label for your self-hosted runner
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+
+  save-artifact:
+    needs: test-app
+    runs-on: self-hosted
+    steps:
+      - name: Package Helm chart
+        run: |
+          helm package ./charts
+
+      - name: Upload Helm chart artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-release-${{ github.sha }}
+          path: ./counterservice-0.1.0.tgz
+          
+
+
+      - name: Upload artifact to Nexus
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+          NEXUS_URL: 'http://nexus.yonif.net'  # Replace with your Nexus URL
+          NEXUS_REPOSITORY: 'counterservice'  # Replace with the repository ID in Nexus
+        run: |
+          curl -v -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file ./counterservice-0.1.0.tgz $NEXUS_URL/repository/$NEXUS_REPOSITORY/my-release/${{ github.sha }}/my-release-${{ github.sha }}.tgz
