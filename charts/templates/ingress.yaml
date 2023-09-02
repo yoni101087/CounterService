@@ -16,7 +16,7 @@ spec:
               service:
                 name: {{ include "name" . }}
                 port:
-                  number: 9082
+                  number: 9083
 
 
 
