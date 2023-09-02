@@ -51,7 +51,7 @@ jobs:
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
           REPO_URL: https://github.com/yoni101087/CounterService.git
         run: |
-          argocd repo add $REPO_URL --username admin --password $ARGOCD_TOKEN --insecure --in-cluster=false --server $ARGOCD_SERVER
+          argocd repo add $REPO_URL --username admin --password $ARGOCD_TOKEN --insecure --server $ARGOCD_SERVER
 
 
       - name: Deploy Application using ArgoCD
