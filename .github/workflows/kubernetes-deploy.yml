@@ -108,7 +108,7 @@ jobs:
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
-          NEXUS_URL: 'nexus.yonif.net'  # Replace with your Nexus URL
+          NEXUS_URL: 'http://nexus.yonif.net'  # Replace with your Nexus URL
           NEXUS_REPOSITORY: 'counterservice'  # Replace with the repository ID in Nexus
         run: |
           curl -v -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file ./counterservice-0.1.0.tgz $NEXUS_URL/repository/$NEXUS_REPOSITORY/my-release/${{ github.sha }}/my-release-${{ github.sha }}.tgz
