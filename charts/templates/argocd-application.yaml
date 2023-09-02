@@ -12,6 +12,5 @@ spec:
     server: {{ .Values.argocdApplication.destination.server }}
     namespace: {{ .Values.argocdApplication.destination.namespace }}
   syncPolicy:
-    automated:
-      prune: {{ .Values.argocdApplication.syncPolicy.automated.prune }}
-      selfHeal: {{ .Values.argocdApplication.syncPolicy.automated.selfHeal }}
+    automated: {}
+
