@@ -13,3 +13,17 @@ ingress:
   enabled: true
   annotations: {}
 
+argocdApplication:
+  name: counterservice
+  project: default
+  source:
+    repoURL: https://github.com/yoni101087/counterservice.git
+    targetRevision: main
+    path: ./charts
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
