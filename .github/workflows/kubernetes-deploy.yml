@@ -45,12 +45,21 @@ jobs:
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
         run: argocd login $ARGOCD_SERVER --insecure --username admin --password $ARGOCD_TOKEN
 
+      - name: Create SSH Private Key File
+        run: echo "$SSH_PRIVATE_KEY" > ssh-key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
       - name: Add Repository to ArgoCD
         env:
           REPO_URL: git@github.com:yoni101087/counterservice.git
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          argocd repo add $REPO_URL --name counterservice --insecure-ignore-host-key --ssh-private-key-path ./$SSH_PRIVATE_KEY
+          argocd repo add $REPO_URL \
+            --name counterservice \
+            --insecure-ignore-host-key \
+            --ssh-private-key-path ~/.ssh/id_rsa
             
 
       - name: Deploy Application using ArgoCD
