@@ -49,7 +49,7 @@ jobs:
         env:
           ARGOCD_SERVER: https://argocd-server.example.com
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
-          REPO_URL: https://github.com/yourusername/your-app-repo.git
+          REPO_URL: https://github.com/yoni101087/CounterService.git
         run: |
           argocd repo add $REPO_URL --username admin --password $ARGOCD_TOKEN --insecure --in-cluster=false --server $ARGOCD_SERVER
 
