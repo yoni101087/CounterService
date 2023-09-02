@@ -1,10 +1,15 @@
-
-name: Kubernetes Deployment Workflow
+name: Manual trigger
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+
+
+#name: Kubernetes Deployment Workflow
+
+#on:
+#  push:
+#    branches:
+#      - master
 
 jobs:
   setup-k8s-cluster:
