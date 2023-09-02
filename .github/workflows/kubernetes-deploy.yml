@@ -74,7 +74,7 @@ jobs:
       - name: Trigger Synchronization
         run: |
           whoami
-          argocd app sync counterservice
+#          argocd app sync counterservice
 
   test-app:
     needs: deploy-app
