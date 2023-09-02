@@ -73,6 +73,7 @@ jobs:
 
       - name: Trigger Synchronization
         run: |
+          whoami
           argocd app sync counterservice
 
   test-app:
