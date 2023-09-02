@@ -47,7 +47,7 @@ jobs:
 
       - name: Add Repository to ArgoCD
         env:
-          ARGOCD_SERVER: https://argocd-server.example.com
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
           REPO_URL: https://github.com/yoni101087/CounterService.git
         run: |
