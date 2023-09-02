@@ -18,7 +18,7 @@ argocdApplication:
   project: default
   source:
     repoURL: https://github.com/yoni101087/counterservice.git
-    targetRevision: main
+    targetRevision: master
     path: ./charts
   destination:
     server: https://kubernetes.default.svc
