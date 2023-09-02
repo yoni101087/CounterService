@@ -45,6 +45,15 @@ jobs:
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
         run: argocd login $ARGOCD_SERVER --insecure --username admin --password $ARGOCD_TOKEN
 
+      - name: Add Repository to ArgoCD
+        env:
+          ARGOCD_SERVER: https://argocd-server.example.com
+          ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
+          REPO_URL: https://github.com/yourusername/your-app-repo.git
+        run: |
+          argocd repo add $REPO_URL --username admin --password $ARGOCD_TOKEN --insecure --in-cluster=false --server $ARGOCD_SERVER
+
+
       - name: Deploy Application using ArgoCD
         env:
           REPO_PATH: ./charts  # Change this to your application's path
@@ -60,7 +69,12 @@ jobs:
 
           argocd app set counterservice \
             --values image.tag=$IMAGE_TAG
-          argocd app sync counterservice
+
+      - name: Trigger Synchronization
+        run: |
+          argocd app sync -l repo=$REPO_URL
+
+   #       argocd app sync counterservice
           
 
   test-app:
