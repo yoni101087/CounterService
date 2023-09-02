@@ -56,7 +56,7 @@ jobs:
             --path $REPO_PATH \
             --dest-server https://kubernetes.default.svc \
             --dest-namespace default \
-            --revision argocd  # Change this to your desired branch or revision
+            --revision master  # Change this to your desired branch or revision
 
           argocd app set counterservice \
             --values image.tag=$IMAGE_TAG
