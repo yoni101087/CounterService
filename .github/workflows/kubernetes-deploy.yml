@@ -50,11 +50,8 @@ jobs:
           REPO_URL: git@github.com:yoni101087/counterservice.git
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          argocd repo add $REPO_URL \
-            --name counterservice \
-            --insecure-ignore-host-key \
-            --ssh-private-key-path ./$SSH_PRIVATE_KEY
-
+          argocd repo add $REPO_URL --name counterservice --insecure-ignore-host-key --ssh-private-key-path ./$SSH_PRIVATE_KEY
+            
 
       - name: Deploy Application using ArgoCD
         env:
