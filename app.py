@@ -21,6 +21,11 @@ def counter_service():
         requests_counter.inc()
         return 'Current count: {}'.format(counter)
 
+@app.route('/metrics')
+def metrics():
+    # Your metric collection code here
+    return 'Metrics will be displayed here.'
+
 if __name__ == '__main__':
     # Start an HTTP server to expose Prometheus metrics on port 8000
     start_http_server(80)
