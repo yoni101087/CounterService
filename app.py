@@ -23,7 +23,7 @@ def counter_service():
 
 if __name__ == '__main__':
     # Start an HTTP server to expose Prometheus metrics on port 8000
-    start_http_server(8000)
+    start_http_server(80)
     
     # Start your Flask app on port 80
     app.run(host='0.0.0.0', port=80)
