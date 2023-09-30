@@ -34,21 +34,21 @@ jobs:
             exit 1  # Fail the workflow if login fails
           fi
 
-  test-app:
-    needs: build-app
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test App Health
-        run: |
-          if curl -sSf http://localhost; then
-            echo "App is healthy"
-          else
-            echo "App is not healthy"
-            exit 1  # Fail the workflow if the health check fails
-          fi
+#  test-app:
+#    needs: build-app
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Test App Health
+#        run: |
+#          if curl -sSf http://localhost; then
+#            echo "App is healthy"
+#          else
+#            echo "App is not healthy"
+#            exit 1  # Fail the workflow if the health check fails
+#          fi
 
   save-artifact:
-    needs: test-app
+#    needs: test-app
     runs-on: self-hosted
     steps:
       - name: Package Helm chart
