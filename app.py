@@ -1,25 +1,28 @@
 from flask import Flask, request
-from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import start_http_server, Counter
+import random
+import time
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)
+counter = 0
 
-counter = metrics.counter(
-    'custom_counter', 'A custom counter metric for the Flask app'
-)
+# Create a Prometheus counter metric to track the number of POST requests
+post_request_counter = Counter('post_requests_total', 'Total number of POST requests')
 
 @app.route('/', methods=['GET', 'POST'])
 def counter_service():
-    if request.method == 'POST':
-        counter.inc()
-        return 'POST request served. Current count: {}'.format(counter.get())
-    elif request.method == 'GET':
-        return 'Current count: {}'.format(counter.get())
+    global counter
 
-# Add a route for Prometheus metrics
-@app.route('/metrics')
-def prometheus_metrics():
-    return metrics.export()
+    if request.method == 'POST':
+        counter += 1
+        # Increment the Prometheus counter metric for POST requests
+        post_request_counter.inc()
+        return 'POST request served. Current count: {}'.format(counter)
+    elif request.method == 'GET':
+        return 'Current count: {}'.format(counter)
 
 if __name__ == '__main__':
+    # Start the Prometheus HTTP server on port 80 with the /metrics path
+    start_http_server(80, addr='0.0.0.0', registry=None, multiprocess_mode='all')
+
     app.run(host='0.0.0.0', port=80)
