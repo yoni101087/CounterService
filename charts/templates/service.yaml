@@ -2,12 +2,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "name" . }}
+  labels:
+    name: {{ include "name" . }}
+    app: {{ include "name" . }}
+    app.kubernetes.io/name: prometheus-operator
 spec:
   selector:
     app: {{ include "name" . }}
     release: {{ .Release.Name }}
   ports:
-    - protocol: TCP
-      port: 9083
+    - name: http
+      port: 80
       targetPort: 80
   type: {{ .Values.service.type }}
