@@ -23,7 +23,7 @@ jobs:
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:${{ steps.short_sha.outputs.short_sha }} .
 
       - name: Run Docker container
-        run: docker run -d --name counterservice ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:${{ steps.short_sha.outputs.short_sha }}
+        run: docker run -d --name counterservice ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:${{ steps.short_sha.outputs.short_sha }} -p 80:80
           
       - name: Log in to Docker Hub
         run: |
