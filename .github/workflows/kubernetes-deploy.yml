@@ -33,7 +33,7 @@ jobs:
           ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
         run: |
           ARGOCD_TOKEN=${{ secrets.ARGOCD_TOKEN }}
-          REPO_NAME="counterservice"  # Replace with the repo you want to check
+          REPO_NAME="git@github.com:yoni101087/CounterService.git"  # Replace with the repo you want to check
 
           response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $ARGOCD_TOKEN" "$ARGOCD_SERVER/api/v1/applications/$REPO_NAME")
           if [ $response -eq 200 ]; then
