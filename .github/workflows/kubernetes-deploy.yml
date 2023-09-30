@@ -27,24 +27,25 @@ jobs:
           ARGOCD_TOKEN: ${{ secrets.ARGOCD_TOKEN }}
         run: argocd login $ARGOCD_SERVER --insecure --username admin --password $ARGOCD_TOKEN
 
-      - name: Check if Repo Exists in ArgoCD
-        id: check-argocd-repo
-        env:
-          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
-        run: |
-          ARGOCD_TOKEN=${{ secrets.ARGOCD_TOKEN }}
-          REPO_NAME="git@github.com:yoni101087/CounterService.git"  # Replace with the repo you want to check
+#      - name: Check if Repo Exists in ArgoCD
+#        id: check-argocd-repo
+#        env:
+#          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+#        run: |
+#          ARGOCD_TOKEN=${{ secrets.ARGOCD_TOKEN }}
+#          REPO_NAME="git@github.com:yoni101087/CounterService.git"  # Replace with the repo you want to check
+#
+#          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $ARGOCD_TOKEN" "$ARGOCD_SERVER/api/v1/applications/$REPO_NAME")
+#          if [ $response -eq 200 ]; then
+#            echo "Repo $REPO_NAME exists in ArgoCD"
+#          else
+#            echo "Repo $REPO_NAME does not exist in ArgoCD"
+#            exit 1
+#          fi
 
-          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $ARGOCD_TOKEN" "$ARGOCD_SERVER/api/v1/applications/$REPO_NAME")
-          if [ $response -eq 200 ]; then
-            echo "Repo $REPO_NAME exists in ArgoCD"
-          else
-            echo "Repo $REPO_NAME does not exist in ArgoCD"
-            exit 1
-          fi
+
 
       - name: Add Repository to ArgoCD
-        if: failure() # Skip if repo exists
         env:
           REPO_URL: git@github.com:yoni101087/counterservice.git
         run: |
