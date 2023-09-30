@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Test App Health
         run: |
-          if curl -sSf http://localhost:8080/health; then
+          if curl -sSf http://localhost; then
             echo "App is healthy"
           else
             echo "App is not healthy"
