@@ -51,6 +51,10 @@ jobs:
     needs: build-app
     runs-on: self-hosted
     steps:
+      
+      - name: Check out code
+        uses: actions/checkout@v2
+
       - name: Package Helm chart
         run: |
           helm package ./charts
