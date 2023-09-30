@@ -8,6 +8,11 @@ counter = metrics.counter(
     'custom_counter', 'A custom counter metric for the Flask app'
 )
 
+# Add a route for Prometheus metrics
+@app.route('/metrics')
+def prometheus_metrics():
+    return metrics.export()
+
 @app.route('/', methods=['GET', 'POST'])
 def counter_service():
     if request.method == 'POST':
@@ -15,11 +20,6 @@ def counter_service():
         return 'POST request served. Current count: {}'.format(counter.get())
     elif request.method == 'GET':
         return 'Current count: {}'.format(counter.get())
-
-# Add a route for Prometheus metrics
-@app.route('/metrics')
-def prometheus_metrics():
-    return metrics.export()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
