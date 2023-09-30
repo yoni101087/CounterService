@@ -48,7 +48,7 @@ jobs:
 #          fi
 
   save-artifact:
-#    needs: test-app
+    needs: build-app
     runs-on: self-hosted
     steps:
       - name: Package Helm chart
