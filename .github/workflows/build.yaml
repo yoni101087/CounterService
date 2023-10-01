@@ -25,11 +25,6 @@ jobs:
       - name: Run Docker container
         run: docker run -d --name counterservice -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:${{ steps.short_sha.outputs.short_sha }} && docker ps -a
 
-      - name: Execute Docker Command
-        id: curl
-        run: |
-          docker exec counterservice bash 'curl -s -o /dev/null -w "%{http_code}" http://localhost'
-        shell: bash
           
       - name: Log in to Docker Hub
         run: |
