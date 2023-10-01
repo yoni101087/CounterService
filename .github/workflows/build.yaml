@@ -24,6 +24,16 @@ jobs:
 
       - name: Run Docker container
         run: docker run -d --name counterservice -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/counterservice:${{ steps.short_sha.outputs.short_sha }} && docker ps -a
+
+      - name: Execute Docker Command and check prometheus metrics
+        id: curl
+        run: |
+          response=$(docker exec my-container curl -s -o /dev/null -w "%{http_code}" http://localhost/metrics)
+          if [ "$response" -eq 404 ]; then
+            echo "HTTP 404 Error: The /metrics endpoint returned a 404 status code."
+            exit 1
+          fi
+        shell: bash   
           
       - name: Log in to Docker Hub
         run: |
@@ -51,7 +61,7 @@ jobs:
     needs: build-app
     runs-on: self-hosted
     steps:
-      
+
       - name: Check out code
         uses: actions/checkout@v2
 
