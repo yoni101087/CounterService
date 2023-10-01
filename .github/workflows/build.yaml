@@ -28,7 +28,7 @@ jobs:
       - name: Execute Docker Command
         id: curl
         run: |
-          docker exec $(docker ps) bash -c 'curl -s -o /dev/null -w "%{http_code}" http://localhost'
+          docker exec counterservice bash -c 'curl -s -o /dev/null -w "%{http_code}" http://localhost'
         shell: bash
           
       - name: Log in to Docker Hub
