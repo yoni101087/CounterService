@@ -28,7 +28,7 @@ jobs:
       - name: Execute Docker Command and check prometheus metrics
         id: curl
         run: |
-          response=$(docker exec my-container curl -s -o /dev/null -w "%{http_code}" http://localhost/metrics)
+          response=$(docker exec counterservice curl -s -o /dev/null -w "%{http_code}" http://localhost/metrics)
           if [ "$response" -eq 404 ]; then
             echo "HTTP 404 Error: The /metrics endpoint returned a 404 status code."
             exit 1
