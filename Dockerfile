@@ -5,7 +5,7 @@ FROM python:3
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY app.py requirements.txt /app
 
 # Install the required packages
 RUN pip install --no-cache-dir -r requirements.txt
