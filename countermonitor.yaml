@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2023-10-03T10:27:57Z"
+  labels:
+    run: counterservice
+  name: countermonitor
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8081"
+  namespace: default
+  resourceVersion: "63133"
+  uid: 38b30382-b2f9-4dcd-b645-13b08c0def81
+spec:
+  clusterIP: 10.107.152.87
+  clusterIPs:
+  - 10.107.152.87
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    run: counterservice
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
